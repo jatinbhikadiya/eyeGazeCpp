@@ -10,9 +10,9 @@ OFLAGS =  -g2
 LFLAGS = -llapack -lm
 
 #Boost Libs Go Here
-BOOST_LIBS = -lboost_system  -lboost_filesystem  -lboost_program_options 
-
-EXECUTABLE = face
+BOOST_LIBS = -lboost_python  -lboost_filesystem  -lboost_program_options 
+PYTHON_LIBS = -lpython2.7
+EXECUTABLE = brivasmodule.so
 
 #Opencv Includes Go here
 OPENCV_PATH = /usr/local/include
@@ -21,7 +21,8 @@ OPENCV_LIBS = -lopencv_calib3d -lopencv_contrib -lopencv_core -lopencv_features2
 OPENCV_INCPATH = -I$(OPENCV_PATH)/opencv
 OPENCV2_INCPATH = -I$(OPENCV_PATH)
 OPENCV_LIBPATH = -L$(OPENCV_LIB)
-
+PYTHON_PATH = /usr/include/python2.7
+PYTHON_INCPATH = -I$(PYTHON_PATH)
 CPP_FILES := $(wildcard src/*.cpp)
 OBJ_FILES := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
 
@@ -34,11 +35,11 @@ BACKUP_PATH = $(BACKUP_REPO)/$(BACKUP_DIR)
 all:$(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJ_FILES)
-	$(CC) $(WFLAGS) $(OPTS) $(LFLAGS)  $(OPENCV_INCPATH)  $(OPENCV2_INCPATH) $(OPENCV_LIBPATH) $(OPENCV_LIBS)  $^ -o $@   $(LFLAGS)
+	$(CC) $(WFLAGS) $(OPTS) $(LFLAGS)  $(OPENCV_INCPATH)  $(OPENCV2_INCPATH) $(OPENCV_LIBPATH) $(PYTHON_LIBS) $(OPENCV_LIBS) $(BOOST_LIBS) $^ -o $@   $(LFLAGS)
 
 obj/%.o: src/%.cpp
 	mkdir -p ./obj
-	$(CC) $(CFLAGS) $(OPENCV_INCPATH)  $(OPENCV2_INCPATH) $(WFLAGS) $(OPTS) $(OFLAGS)  -c -o $@ $<  
+	$(CC) $(CFLAGS) $(OPENCV_INCPATH) $(PYTHON_INCPATH)  $(OPENCV2_INCPATH) $(WFLAGS) $(OPTS) $(OFLAGS)  -c -o $@ $<  
 
 
 
