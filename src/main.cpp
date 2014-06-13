@@ -1,6 +1,7 @@
 /*
  gaze tracking
  */
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -44,7 +45,7 @@ using namespace boost::python;
 
 IplImage *imgScribble = NULL;
 cv::String face_cascade_name =
-		"C:/opencv/data/haarcascades/haarcascade_frontalface_alt.xml";
+		"haarcascade_frontalface_alt.xml";
 cv::CascadeClassifier face_cascade;
 std::string main_window_name = "Capture - Face detection";
 std::string face_window_name = "Capture - Face";
@@ -341,6 +342,7 @@ void detectFaceInImage(IplImage *orig, IplImage* input,
 		bbox[3] = r->y + r->height;
 
 		flandmark_detect(input, bbox, model, landmarks);
+
 		//pupil 
 		dx = bbox[0];
 		dy = bbox[1];
@@ -379,13 +381,14 @@ void detectFaceInImage(IplImage *orig, IplImage* input,
 	int ms = cvRound(t / ((double) cvGetTickFrequency() * 1000.0));
 
 	if (nFaces > 0) {
-		printf(
+		/*printf(
 				"Faces detected: %d; Detection of facial landmark on all faces took %d ms\n",
-				nFaces, ms);
+				nFaces, ms);*/
 	} else {
-		printf("NO Face\n");
+		printf("No Face\n");
 	}
 	cvReleaseMemStorage(&storage);
+
 }
 
 PyObject* detect(PyObject* myframe,char* n) {
@@ -393,7 +396,7 @@ PyObject* detect(PyObject* myframe,char* n) {
 	char flandmark_window[] = "flandmark_example2";
 	// load classifiers - Haar Cascade file, used for Face Detection.
 	char faceCascadeFilename[] =
-			"/Jatin/workspace/eyeGaze/haarcascade_frontalface_alt.xml";
+			"haarcascade_frontalface_alt.xml";
 	// Load the HaarCascade classifier for face detection.
 	CvHaarClassifierCascade* faceCascade;
 
@@ -414,7 +417,7 @@ PyObject* detect(PyObject* myframe,char* n) {
 	pyopencv_to(myframe,image); // eye patches obtained from findeyecenter is used are saved in location defined in path
 	//image = imread(path);
 	t = (double) cvGetTickCount();
-	FLANDMARK_Model * model = flandmark_init("/Jatin/workspace/eyeGaze/flandmark_model.dat");
+	FLANDMARK_Model * model = flandmark_init("flandmark_model.dat");
 	if (model == 0) {
 		printf(
 				"Structure model was not created. Corrupted file flandmark_model.dat?\n");
@@ -422,7 +425,7 @@ PyObject* detect(PyObject* myframe,char* n) {
 	}
 	t = (double) cvGetTickCount() - t;
 	ms = cvRound(t / ((double) cvGetTickFrequency() * 1000.0));
-	printf("Structure model loaded in %d ms.\n", ms);
+	//printf("Structure model loaded in %d ms.\n", ms);
 	// ------------- end flandmark load model
 	int *bbox = (int*) malloc(4 * sizeof(int));
 	double *landmarks = (double*) malloc(

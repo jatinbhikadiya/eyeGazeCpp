@@ -184,7 +184,7 @@ cv::Point findEyeCenter(cv::Mat face, cv::Rect eye, std::string debugWindow,std:
     cv::threshold(out, floodClone, floodThresh, 0.0f, cv::THRESH_TOZERO);
     {
       //plotVecField(gradientX, gradientY, floodClone);
-		cout << path << endl;
+		//cout << path << endl;
 		
     }
     cv::Mat mask = floodKillEdges(floodClone);
